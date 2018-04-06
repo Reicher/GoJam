@@ -3,21 +3,20 @@ package iohandler
 import (
 	"fmt"
 	"os"
-	//"log"
-	//"strings"
 	"strconv"
 	"bufio"
 )
 
 type RawCase struct{
 	Id int
-	Rows []string
+	Row []string
 }
 
 type RawSolution struct{
 	Id int
-	Text string
+	Row string
 }
+
 func check(e error) {
     if e != nil {
         panic(e)
@@ -40,7 +39,7 @@ func readLines(path string) ([]string, error) {
 }
 
 func GetRawCases(path string) []RawCase{
-	fmt.Println("Loading file: ", path)
+	fmt.Println("Loading file:", path)
 
 	file_data, err := readLines(path)
 	check(err)
@@ -58,18 +57,28 @@ func GetRawCases(path string) []RawCase{
 
 		rows := file_data[start : end]
 
-		test_case := RawCase{Id: i, Rows: rows}
+		test_case := RawCase{Id: i, Row: rows}
 
 		cases = append(cases, test_case)
 	}
 	return cases
 }
 
-// func SaveSolutions(path string){
-//  	fmt.Println("Loading file: ", path)
+func SaveSolutions(solutions []RawSolution, filename string){
+	fmt.Println("Saving file:", filename)
 
-//  	dat, err := ioutil.ReadFile(path)
-//  	check(err)
+	file, err := os.Create(filename)
+ 	check(err)
 
-//  	fmt.Print(string(dat))
-// }
+	defer file.Close()
+
+	for index, solution := range solutions {
+
+		if index != solution.Id {
+			panic("SaveSolutions: Id missmatch!" )
+		}
+
+		line := "Case #" + strconv.Itoa(solution.Id) + ": " + solution.Row + "\r"
+		file.WriteString(line)
+	}
+}

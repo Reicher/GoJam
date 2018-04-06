@@ -2,13 +2,12 @@ package main
 
 import (
 	"os"
-	"fmt"
 	"log"
 	"github.com/reicher/GoJam/iohandler"
 )
 
 func solver(c iohandler.RawCase) iohandler.RawSolution{
-	sol := iohandler.RawSolution{Id: c.Id, Text: "TEST"}
+	sol := iohandler.RawSolution{Id: c.Id, Row: "1234567890"}
 	return sol
 }
 
@@ -20,7 +19,6 @@ func main() {
 	}
 
 	cases := iohandler.GetRawCases(os.Args[1])
-	fmt.Println(len(cases))
 
 	var solutions []iohandler.RawSolution
 	for _, c := range cases {
@@ -28,5 +26,6 @@ func main() {
 		solutions = append(solutions, s)
 	}
 
-	fmt.Println(len(solutions))
+	out_filename := os.Args[1][:len(os.Args[1])-3] + ".out"
+	iohandler.SaveSolutions(solutions, out_filename)
 }
