@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func tsort(d int, v []int) []int {
+func solver(d int, v []int ) string{
 	done := false
 	for !done {
 		done = true
@@ -19,21 +19,13 @@ func tsort(d int, v []int) []int {
 			}
 		}
 	}
-	return v
-}
 
-func isSorted(d int, v []int) bool {
-	return false
-}
-
-func solver(d int, v []int ) string{
-	sorted := tsort(d, v)
-	//fmt.Println(sorted)
-	if isSorted(d, sorted){
-		return "OK"
-	} else {
-		return "NOT OK"
+	for i := 0; i < d-1; i++ {
+		if v[i] > v[i+1]{
+			return strconv.Itoa(i)
+		}
 	}
+	return "OK"
 }
 
 func main() {
